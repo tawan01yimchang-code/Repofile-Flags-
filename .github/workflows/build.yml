@@ -1,4 +1,4 @@
-name: Build Apk
+name: Build Android App
 
 on:
   push:
@@ -25,9 +25,10 @@ jobs:
         with:
           gradle-version: '8.5'
           arguments: assembleDebug
+          build-root-directory: ./WinDebLab
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: WinDeb Lab - Material You
-          path: app/build/outputs/apk/debug/WinDeb Lab - Material You.apk
+          name: WinDebLab-Debug
+          path: WinDebLab/app/build/outputs/apk/debug/app-debug.apk
