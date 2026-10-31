@@ -20,13 +20,13 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Setup Gradle
+      - name: Find and Build with Gradle
         uses: gradle/actions/setup-gradle@v3
         with:
           gradle-version: '8.5'
-
-      - name: Build with Gradle
-        run: gradle assembleDebug
+          arguments: assembleDebug
+          # ให้ระบบค้นหาโฟลเดอร์โปรเจกต์ที่มี settings.gradle หรือ settings.gradle.kts โดยอัตโนมัติ
+          find-gradle-project: true
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
