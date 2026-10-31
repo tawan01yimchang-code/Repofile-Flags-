@@ -1,4 +1,4 @@
-name: Build Android App
+name: Build Apk
 
 on:
   push:
@@ -21,12 +21,12 @@ jobs:
           java-version: '17'
 
       - name: Build with Gradle
-        uses: gradle/actions/setup-gradle@v3
+        uses: gradle/actions/setup-gradle@v4
         with:
           arguments: assembleDebug
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: app-debug
-          path: app/build/outputs/apk/debug/app-debug.apk
+          name: WinDeb Lab - Material You
+          path: app/build/outputs/apk/debug/WinDeb Lab - Material You.apk
