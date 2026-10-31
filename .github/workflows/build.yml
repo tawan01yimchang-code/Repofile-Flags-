@@ -20,15 +20,13 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Setup Gradle and Build
-        uses: gradle/actions/setup-gradle@v3
-        with:
-          gradle-version: '8.5'
-          arguments: assembleDebug
-          build-root-directory: ./WinDebLab
+      - name: Download Gradle and Build APK
+        run: |
+          gradle wrapper --gradle-version 8.5
+          ./gradlew assembleDebug
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
           name: WinDebLab-Debug
-          path: WinDebLab/app/build/outputs/apk/debug/app-debug.apk
+          path: app/build/outputs/apk/debug/app-debug.apk
