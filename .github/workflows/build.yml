@@ -1,32 +1,38 @@
-name: Build Android App
+name: Build APK
 
 on:
   push:
-    branches: [ "main", "master" ]
-  pull_request:
-    branches: [ "main", "master" ]
+    branches: [ main, master ]
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout Repository
+      - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Unzip project
+        run: unzip -q WinDebLab.zip
 
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
-          distribution: 'temurin'
-          java-version: '17'
+          distribution: temurin
+          java-version: 17
 
-      - name: Download Gradle and Build APK
-        run: |
-          gradle wrapper --gradle-version 8.5
-          ./gradlew assembleDebug
+      - name: Set up Gradle 8.7
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: 8.7
 
-      - name: Upload APK Artifact
+      - name: Build debug APK
+        working-directory: WinDebLab
+        run: gradle assembleDebug --stacktrace
+
+      - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: WinDebLab-Debug
-          path: app/build/outputs/apk/debug/app-debug.apk
+          name: WinDebLab-debug-apk
+          path: WinDebLab-debug/app/build/outputs/apk/debug/*.apk
+          if-no-files-found: error
