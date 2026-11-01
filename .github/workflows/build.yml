@@ -14,7 +14,7 @@ jobs:
 
       - name: Unzip project
         run: |
-          unzip -q WinDebLab_MaterialYou_Shizuku.zip -d project
+          unzip -q WinDebLab_MaterialYou_Shizuku_.zip -d project
           D=$(dirname "$(find project -name settings.gradle.kts | head -1)")
           echo "Project dir: $D"
           echo "PROJECT_DIR=$D" >> "$GITHUB_ENV"
