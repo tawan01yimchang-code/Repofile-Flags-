@@ -13,7 +13,11 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Unzip project
-        run: unzip -q WinDebLab.zip
+        run: |
+          unzip -q WinDebLab_MaterialYou_Shizuku.zip -d project
+          D=$(dirname "$(find project -name settings.gradle.kts | head -1)")
+          echo "Project dir: $D"
+          echo "PROJECT_DIR=$D" >> "$GITHUB_ENV"
 
       - name: Set up JDK 17
         uses: actions/setup-java@v4
@@ -27,12 +31,12 @@ jobs:
           gradle-version: 8.7
 
       - name: Build debug APK
-        working-directory: WinDebLab
+        working-directory: ${{ env.PROJECT_DIR }}
         run: gradle assembleDebug --stacktrace
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: WinDebLab-debug-apk
-          path: WinDebLab-debug/app/build/outputs/apk/debug/*.apk
+          name: WinDeb-Lab-Material-You-apk
+          path: ${{ env.PROJECT_DIR }}/app/build/outputs/apk/debug/*.apk
           if-no-files-found: error
