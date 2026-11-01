@@ -14,7 +14,7 @@ jobs:
 
       - name: Unzip project
         run: |
-          unzip -q WinDebLab_MaterialYou_Shizuku_.zip -d project
+          unzip -q PureLock.zip -d project
           D=$(dirname "$(find project -name settings.gradle.kts | head -1)")
           echo "Project dir: $D"
           echo "PROJECT_DIR=$D" >> "$GITHUB_ENV"
@@ -37,11 +37,11 @@ jobs:
         run: gradle assembleDebug --stacktrace
 
       - name: Rename APK
-        run: mv ${{ env.PROJECT_DIR }}/app/build/outputs/apk/debug/app-debug.apk "${{ env.PROJECT_DIR }}/app/build/outputs/apk/debug/WinDeb Lab - Material You.apk"
+        run: mv ${{ env.PROJECT_DIR }}/app/build/outputs/apk/debug/app-debug.apk "${{ env.PROJECT_DIR }}/app/build/outputs/apk/debug/Pure Lock.apk"
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: WinDeb Lab - Material You
+          name: Pure Lock
           path: ${{ env.PROJECT_DIR }}/app/build/outputs/apk/debug/*.apk
           if-no-files-found: error
