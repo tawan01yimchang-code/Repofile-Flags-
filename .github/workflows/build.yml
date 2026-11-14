@@ -29,7 +29,7 @@ jobs:
         run: |
           f=$(find . -name 'settings.gradle.kts' -o -name 'settings.gradle' | head -1)
           if [ -z "$f" ]; then
-            for z in $(find . -maxdepth 2 -name '*.zip'); do echo "Unzipping $z"; unzip -oq "$z" -d _unzipped; done
+            find . -maxdepth 2 -iname '*.zip' -print0 | while IFS= read -r -d '' z; do echo "Unzipping $z"; unzip -oq "$z" -d _unzipped; done
             f=$(find . -name 'settings.gradle.kts' -o -name 'settings.gradle' | head -1)
           fi
           if [ -z "$f" ]; then
