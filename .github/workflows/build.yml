@@ -29,6 +29,10 @@ jobs:
         run: |
           f=$(find . -name 'settings.gradle.kts' -o -name 'settings.gradle' | head -1)
           if [ -z "$f" ]; then
+            for z in $(find . -maxdepth 2 -name '*.zip'); do echo "Unzipping $z"; unzip -oq "$z" -d _unzipped; done
+            f=$(find . -name 'settings.gradle.kts' -o -name 'settings.gradle' | head -1)
+          fi
+          if [ -z "$f" ]; then
             echo "::error::No settings.gradle(.kts) found in this repo. Upload the project files (not the zip) to the repo."
             ls -R | head -50
             exit 1
