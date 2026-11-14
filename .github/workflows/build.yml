@@ -2,7 +2,6 @@ name: Build APK
 
 on:
   push:
-    branches: [ main, master ]
   pull_request:
   workflow_dispatch:
 
@@ -25,12 +24,24 @@ jobs:
         with:
           gradle-version: 8.9
 
+      - name: Find Gradle project folder
+        id: find
+        run: |
+          f=$(find . -name 'settings.gradle.kts' -o -name 'settings.gradle' | head -1)
+          if [ -z "$f" ]; then
+            echo "::error::No settings.gradle(.kts) found in this repo. Upload the project files (not the zip) to the repo."
+            ls -R | head -50
+            exit 1
+          fi
+          echo "dir=$(dirname "$f")" >> "$GITHUB_OUTPUT"
+          echo "Project folder: $(dirname "$f")"
+
       - name: Build debug APK
-        run: gradle assembleDebug --stacktrace
+        run: gradle -p "${{ steps.find.outputs.dir }}" assembleDebug --stacktrace
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: Win10Launcher-debug
-          path: app/build/outputs/apk/debug/*.apk
+          path: "**/build/outputs/apk/debug/*.apk"
           if-no-files-found: error
